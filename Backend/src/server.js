@@ -9,9 +9,14 @@ import { doubleCsrfProtection } from './config/csrf.js';
 import { visitorMiddleware } from './middleware/visitorMiddleware.js';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
-const PORT = process.env.PORT || 8080;
+import serviceRequestRouter from './routes/serviceRequestRoutes.js';
+import serviceRouter from './routes/serviceRoutes.js';
+import projectRouter from './routes/projectRoutes.js';
+import messageRouter from './routes/messageRoutes.js';
 
 const app = express();
+
+const PORT = process.env.PORT || 8080;
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(cors({
@@ -33,6 +38,10 @@ app.get("/", (req, res) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+app.use('/api/service', serviceRouter);
+app.use('/api/service-request', serviceRequestRouter);
+app.use('/api/project', projectRouter);
+app.use('/api/message', messageRouter);
 
 // For Non-exist Route Handling
 app.all('/*splat', (req, res) => {

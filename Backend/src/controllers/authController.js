@@ -67,6 +67,18 @@ export const loginUser = async (req, res) => {
     }
 };
 
+// LOGOUT
+export const logoutUser = async (req, res) => {
+    try {
+        // just simple logout functionality
+        const cookieName = process.env.NODE_ENV === 'production' ? "__Host-auth-token" : "auth-token";
+        res.clearCookie(cookieName);
+        res.json({message: 'Logout Successfully'});
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+}
+
 // GET CURRENT USER
 export const getMe = async (req, res) => {
     res.json(req.user);
@@ -75,5 +87,5 @@ export const getMe = async (req, res) => {
 // GET CSRF Token
 export const getCsrfToken = (req, res) => {
     const token = generateCsrfToken(req, res);
-    res.json({ message: "CSRF Token got successfully!", data: token });
+    res.json({ message: "CSRF Token got successfully!" });
 }
