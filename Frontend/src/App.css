@@ -1,0 +1,6 @@
+* {
+  font-synthesis: none; /* Disable font synthesis to prevent automatic generation of bold and italic styles */
+  text-rendering: optimizeLegibility; /* Enable advanced text rendering features for better readability */
+  -webkit-font-smoothing: antialiased; /* Enable font smoothing for WebKit browsers (e.g., Chrome, Safari) */
+  -moz-osx-font-smoothing: grayscale; /* Enable font smoothing for Firefox on macOS */
+}
