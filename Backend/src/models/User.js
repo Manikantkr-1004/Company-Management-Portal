@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ClientCompany',
     },
+    userAgent: {type: String}
 }, {versionKey: false, timestamps: true});
 
 export const UserModel = mongoose.model('User', userSchema);

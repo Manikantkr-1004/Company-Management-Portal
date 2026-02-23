@@ -39,6 +39,9 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
+        user.userAgent = req.userAgent;
+        await user.save();
+
         const token = generateJwtToken(user);
 
         const cookieName = process.env.NODE_ENV === 'production' ? "__Host-auth-token" : "auth-token";
@@ -53,7 +56,6 @@ export const loginUser = async (req, res) => {
 
         res.json({
             message: 'Login successfull!', data: {
-                token,
                 user: {
                     id: user._id,
                     name: user.name,
