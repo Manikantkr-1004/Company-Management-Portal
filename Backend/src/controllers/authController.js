@@ -39,7 +39,7 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        user.userAgent = req.userAgent;
+        user.userAgent = req.headers['user-agent'];
         await user.save();
 
         const token = generateJwtToken(user);

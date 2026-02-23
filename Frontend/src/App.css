@@ -1,6 +1,72 @@
 * {
+  font-family: Arial, Helvetica, sans-serif;
   font-synthesis: none; /* Disable font synthesis to prevent automatic generation of bold and italic styles */
   text-rendering: optimizeLegibility; /* Enable advanced text rendering features for better readability */
   -webkit-font-smoothing: antialiased; /* Enable font smoothing for WebKit browsers (e.g., Chrome, Safari) */
   -moz-osx-font-smoothing: grayscale; /* Enable font smoothing for Firefox on macOS */
+}
+
+:root{
+  --dark-color: #0c1a25;
+  --light-color: #63e4fd;
+}
+
+/* Loading Animation CSS  */
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  height: 96px;
+  width: 96px;
+  animation: rotate_3922 1.2s linear infinite;
+  background-color: var(--dark-color);
+  background-image: linear-gradient(var(--dark-color), #84cdfa, #5ad1cd);
+}
+
+.loader span {
+  position: absolute;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+  background-color: var(--dark-color);
+  background-image: linear-gradient(var(--dark-color), #84cdfa, #5ad1cd);
+}
+
+.loader span:nth-of-type(1) {
+  filter: blur(5px);
+}
+
+.loader span:nth-of-type(2) {
+  filter: blur(10px);
+}
+
+.loader span:nth-of-type(3) {
+  filter: blur(25px);
+}
+
+.loader span:nth-of-type(4) {
+  filter: blur(50px);
+}
+
+.loader::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  background-color: #fff;
+  border: solid 5px #ffffff;
+  border-radius: 50%;
+}
+
+@keyframes rotate_3922 {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }

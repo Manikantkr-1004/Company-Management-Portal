@@ -4,7 +4,7 @@ import PublicLayout from "../layouts/PublicLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 
-import ProtectedRoutes from "./ProtectedRoutes";
+import SafeRoutes from "./SafeRoutes";
 import AuthLayout from "../layouts/AuthLayout";
 import Dashboard from "../pages/Dashboard";
 import Projects from "../pages/Projects";
@@ -21,20 +21,22 @@ export default function AllRoutes() {
 
             <Route path="/" element={<PublicLayout />}>
                 <Route index element={<Home />} />
-                <Route path="auth/login" element={<Login />} />
+                <Route path="auth/login" element={<SafeRoutes roles={[]}><Login /></SafeRoutes>} />
             </Route>
 
-            <Route path="/" element={
-                <ProtectedRoutes>
-                    <AuthLayout />
-                </ProtectedRoutes>
-            }>
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="projects" element={<Projects />} />
-                <Route path="services" element={<Services />} />
-                <Route path="users" element={<User />} />
-                <Route path="messages" element={<Message />} />
-                <Route path="profile" element={<Profile />} />
+            <Route path="/" element={<AuthLayout />}>
+                <Route path="dashboard" element=
+                    { <SafeRoutes roles={['admin', 'employee', 'client']}><Dashboard /></SafeRoutes> } />
+                <Route path="projects" element=
+                    { <SafeRoutes roles={['admin', 'employee', 'client']}><Projects /></SafeRoutes> } />
+                <Route path="services" element=
+                    { <SafeRoutes roles={['admin', 'client']}><Services /></SafeRoutes> } />
+                <Route path="users" element=
+                    { <SafeRoutes roles={['admin']}><User /></SafeRoutes> } />
+                <Route path="messages" element=
+                    { <SafeRoutes roles={['admin', 'employee', 'client']}><Message /></SafeRoutes> } />
+                <Route path="profile" element=
+                    { <SafeRoutes roles={['admin', 'employee', 'client']}><Profile /></SafeRoutes> } />
             </Route>
 
         </Routes>

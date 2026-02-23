@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { GetCsrfToken, GetUserMe } from "../actions/authAction";
 
 export const UserContext = createContext();
 
@@ -7,8 +8,10 @@ const initialUserData = {
     name: '',
     email: '',
     role: '',
+    createdAt: '',
+    updatedAt: '',
     isLoggedIn: false,
-    isLoading: false
+    isLoading: true
 }
 
 export function UserProvider({ children }) {
@@ -16,11 +19,30 @@ export function UserProvider({ children }) {
     const [user, setUser] = useState(initialUserData);
 
     const handleLogin = (data) => {
-        setUser({...data, isLoggedIn: true});
+        setUser((prev)=> ({...prev, ...data, isLoggedIn: true, isLoading: false}));
     }
 
     const handleLogout = () => {
-        setUser(initialUserData);
+        setUser({...initialUserData, isLoading: false});
+    }
+
+    useEffect(() => {
+        handleAuth();
+    }, []);
+
+    const handleAuth = async () => {
+        try {
+            const [csrfResponse, userResponse] = await Promise.all([
+                GetCsrfToken(),
+                GetUserMe()
+            ]);
+
+            handleLogin(userResponse.data);
+        } catch (error) {
+            console.error('Something went wrong with Auth', error);
+        } finally {
+            setUser((prev) => ({...prev, isLoading: false}));
+        }
     }
 
     return (
