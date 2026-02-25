@@ -11,7 +11,7 @@ const initialData = {
 
 export default function Login() {
 
-    const { handleLogin } = useContext(UserContext);
+    const { user, handleLogin } = useContext(UserContext);
     const [formData, setFormData] = useState(initialData);
     const [loading, setLoading] = useState(false);
 
@@ -29,7 +29,7 @@ export default function Login() {
 
         try {
             setLoading(true);
-            const response = await UserLogin(formData);
+            const response = await UserLogin(formData, user.csrfToken);
             toast.success(response.data.message);
             handleLogin(response.data.data.user);
         } catch (error) {

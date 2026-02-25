@@ -61,6 +61,8 @@ export const loginUser = async (req, res) => {
                     name: user.name,
                     email: user.email,
                     role: user.role,
+                    createdAt: user.createdAt,
+                    userAgent: user.userAgent
                 },
             }
         });
@@ -83,11 +85,11 @@ export const logoutUser = async (req, res) => {
 
 // GET CURRENT USER
 export const getMe = async (req, res) => {
-    res.json(req.user);
+    res.json({message: "User got successfully", data: req.user});
 };
 
 // GET CSRF Token
 export const getCsrfToken = (req, res) => {
     const token = generateCsrfToken(req, res);
-    res.json({ message: "CSRF Token got successfully!" });
+    res.json({ message: "CSRF Token got successfully!", data: token });
 }

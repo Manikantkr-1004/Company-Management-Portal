@@ -10,6 +10,7 @@ import Dashboard from "../pages/Dashboard";
 import Projects from "../pages/Projects";
 import Services from "../pages/Services";
 import User from "../pages/User";
+import ClientCompany from "../pages/ClientCompany";
 import Message from "../pages/Message";
 import Profile from "../pages/Profile";
 
@@ -33,6 +34,8 @@ export default function AllRoutes() {
                     { <SafeRoutes roles={['admin', 'client']}><Services /></SafeRoutes> } />
                 <Route path="users" element=
                     { <SafeRoutes roles={['admin']}><User /></SafeRoutes> } />
+                <Route path="client-company" element=
+                    { <SafeRoutes roles={['admin']}><ClientCompany /></SafeRoutes> } />
                 <Route path="messages" element=
                     { <SafeRoutes roles={['admin', 'employee', 'client']}><Message /></SafeRoutes> } />
                 <Route path="profile" element=

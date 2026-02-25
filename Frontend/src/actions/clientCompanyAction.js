@@ -1,7 +1,7 @@
 import axios from 'axios';
-const API = import.meta.env.VITE_BACKEND_URL + '/api/service';
+const API = import.meta.env.VITE_BACKEND_URL + '/api/client-company';
 
-export const AdminCreateService = async (data, token) => {
+export const AdminCreateClientCompany = async (data, token) => {
     return await axios.post(`${API}`, data, {
         withCredentials: true,
         headers: {
@@ -10,7 +10,7 @@ export const AdminCreateService = async (data, token) => {
     })
 }
 
-export const GetAllServices = async () => {
+export const AdminGetClientCompany = async () => {
     return await axios.get(`${API}`, {
         withCredentials: true
     })

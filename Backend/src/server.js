@@ -13,6 +13,7 @@ import serviceRequestRouter from './routes/serviceRequestRoutes.js';
 import serviceRouter from './routes/serviceRoutes.js';
 import projectRouter from './routes/projectRoutes.js';
 import messageRouter from './routes/messageRoutes.js';
+import clientCompanyRouter from './routes/clientCompanyRoutes.js';
 
 const app = express();
 
@@ -21,7 +22,7 @@ const PORT = process.env.PORT || 8080;
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(cors({
   origin: [process.env.FRONTEND_URL],
-  methods: ["GET", "POST", "PATCH", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 app.use(helmet());
@@ -39,6 +40,7 @@ app.get("/", (req, res) => {
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/service', serviceRouter);
+app.use('/api/client-company', clientCompanyRouter);
 app.use('/api/service-request', serviceRequestRouter);
 app.use('/api/project', projectRouter);
 app.use('/api/message', messageRouter);

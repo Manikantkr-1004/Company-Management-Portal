@@ -23,7 +23,7 @@ export const createUser = async (req, res) => {
             return res.status(400).json({ message: "Please provide all fields" });
         }
 
-        const existingUser = await User.findOne({ email });
+        const existingUser = await UserModel.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
@@ -48,7 +48,7 @@ export const createUser = async (req, res) => {
 export const getAllUsers = async (req, res) => {
     try {
         const filter = req.query.role ? { role: req.query.role } : { role: { $ne: 'admin' } };
-        const users = await UserModel.find(filter).select("-password");
+        const users = await UserModel.find(filter).select("-password").populate("company", "name").sort({createdAt: -1});
         res.json({ message: "Users Fetched Successfully!", data: users })
     } catch (error) {
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
@@ -74,7 +74,7 @@ export const updateUser = async (req, res) => {
             updatedData.password = hashedPassword;
         }
 
-        await UserModel.findOneAndUpdate({ _id: id }, updatedData, { new: true });
+        await UserModel.findByIdAndUpdate(id, updatedData);
 
         res.json({ message: "User updated successfully" });
     } catch (error) {
@@ -97,7 +97,7 @@ export const deleteUser = async (req, res) => {
             return res.status(403).json({ message: "Cannot delete admin" });
         }
 
-        await UserModel.findOneAndDelete({ _id: id });
+        await UserModel.findByIdAndDelete({ _id: id });
 
         res.json({ message: "User deleted successfully" });
     } catch (error) {
@@ -114,7 +114,7 @@ export const getDashboardStats = async (req, res) => {
             const totalEmployees = await UserModel.countDocuments({ role: "employee" });
             const totalClients = await UserModel.countDocuments({ role: "client" });
             const totalProjects = await ProjectModel.countDocuments();
-            const totalServices = await ServiceModel.countDocuments();
+            const totalServices = await ServiceModel.countDocuments();z
 
             const completedProjects = await ProjectModel.countDocuments({ status: "completed" });
             const inProgressProjects = await ProjectModel.countDocuments({ status: "in-progress" });

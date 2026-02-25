@@ -15,7 +15,7 @@ export const protect = async (req, res, next) => {
         const user = await UserModel.findById(decoded.id).select("-password").lean();
 
         if (!user) {
-            return res.status(401).json({ message: "User not exist" });
+            return res.status(401).json({ message: "User not exist / You have been removed, Kindly Refresh" });
         }
         req.user = {...user, id: user._id};
 

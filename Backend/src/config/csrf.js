@@ -17,5 +17,5 @@ export const {
   },
   size: 32,
   ignoredMethods: ["GET", "HEAD", "OPTIONS"],
-  getCsrfTokenFromRequest: (req) => req.cookies[cookieName] || req.headers[cookieName],
+  getCsrfTokenFromRequest: (req) => req.headers['x-csrf-token'],
 });

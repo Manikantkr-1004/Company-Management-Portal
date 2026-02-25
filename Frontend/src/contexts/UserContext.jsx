@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { GetCsrfToken, GetUserMe } from "../actions/authAction";
+import axios from "axios";
 
 export const UserContext = createContext();
 
@@ -9,7 +10,8 @@ const initialUserData = {
     email: '',
     role: '',
     createdAt: '',
-    updatedAt: '',
+    userAgent: '',
+    csrfToken: '',
     isLoggedIn: false,
     isLoading: true
 }
@@ -22,8 +24,13 @@ export function UserProvider({ children }) {
         setUser((prev)=> ({...prev, ...data, isLoggedIn: true, isLoading: false}));
     }
 
+    const updateUser = (data) => {
+        setUser((prev)=> ({...prev, ...data}));
+    }
+
     const handleLogout = () => {
-        setUser({...initialUserData, isLoading: false});
+        const csrfToken = user.csrfToken;
+        setUser({...initialUserData, isLoading: false, csrfToken});
     }
 
     useEffect(() => {
@@ -32,12 +39,19 @@ export function UserProvider({ children }) {
 
     const handleAuth = async () => {
         try {
-            const [csrfResponse, userResponse] = await Promise.all([
+            const [csrfResponse, userResponse] = await Promise.allSettled([
                 GetCsrfToken(),
                 GetUserMe()
             ]);
 
-            handleLogin(userResponse.data);
+           if(csrfResponse.status==='fulfilled'){
+            setUser((prev)=> ({...prev, csrfToken: csrfResponse.value.data.data}));
+           }
+
+           if(userResponse.status==='fulfilled'){
+               handleLogin(userResponse.value.data.data);
+           }
+
         } catch (error) {
             console.error('Something went wrong with Auth', error);
         } finally {
@@ -46,7 +60,7 @@ export function UserProvider({ children }) {
     }
 
     return (
-        <UserContext.Provider value={{ user, handleLogin, handleLogout }}>
+        <UserContext.Provider value={{ user, handleLogin, updateUser, handleLogout }}>
             {children}
         </UserContext.Provider>
     )

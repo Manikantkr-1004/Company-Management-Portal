@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { UserContext } from '../contexts/userContext';
 import { UserLogout } from '../actions/authAction';
 import { toast } from 'react-toastify';
@@ -20,9 +20,19 @@ const allRoutes = [
         roles: ['admin', 'employee', 'client'],
     },
     {
-        name: 'Projects',
-        url: '/projects',
+        name: 'Profile',
+        url: '/profile',
         roles: ['admin', 'employee', 'client'],
+    },
+    {
+        name: 'Users',
+        url: '/users',
+        roles: ['admin'],
+    },
+    {
+        name: 'Client Company',
+        url: '/client-company',
+        roles: ['admin'],
     },
     {
         name: 'Services',
@@ -30,34 +40,36 @@ const allRoutes = [
         roles: ['admin', 'client'],
     },
     {
-        name: 'All Users',
-        url: '/users',
-        roles: ['admin'],
+        name: 'Projects',
+        url: '/projects',
+        roles: ['admin', 'employee', 'client'],
     },
     {
         name: 'Messages',
         url: '/messages',
         roles: ['admin', 'employee', 'client'],
     },
-    {
-        name: 'Profile',
-        url: '/profile',
-        roles: ['admin', 'employee', 'client'],
-    }
-]
+];
 
 export default function AuthLayout() {
 
     const { user, handleLogout } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
+    const {pathname} = useLocation();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const width = window.innerWidth;
 
+    const handleToggle = () => {
+        if(width <= 1000){
+            setIsMenuOpen(false);
+        }
+    }
+
     const makeLogout = async () => {
         try {
             setLoading(true);
-            const response = await UserLogout();
+            const response = await UserLogout(user.csrfToken);
             handleLogout();
             toast.success(response.data.message);
         } catch (error) {
@@ -78,7 +90,7 @@ export default function AuthLayout() {
 
                 <div className="w-full flex items-center gap-3">
                     <div className="min-w-10 w-10 min-h-10 h-10 rounded-full bg-white overflow-hidden border-2 border-(--light-color)">
-                        <img className='w-full h-full object-cover' src={`https://robohash.org/${user.name}`} alt={user.name} width={32} height={32} />
+                        <img className='w-full h-full object-cover' src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${user.name}`} alt={user.name} width={32} height={32} />
                     </div>
                     <div className="w-full flex flex-col gap-1 overflow-hidden">
                         <p className='text-sm text-(--light-color) font-semibold'>{user.name}</p>
@@ -90,11 +102,12 @@ export default function AuthLayout() {
                     {
                         allRoutes.map((ele) => {
                             return ele.roles.includes(user.role) ?
-                            <Link to={ele.url} className="w-full flex items-center gap-2 bg-(--light-color)/10 hover:bg-(--light-color)/30 p-2 text-sm rounded-md font-semibold text-(--light-color)">
+                            <Link key={ele.name} to={ele.url} onClick={handleToggle}
+                            className={`w-full flex items-center gap-2 ${ele.url === pathname ? 'bg-(--light-color)/40' : 'bg-(--light-color)/10'} hover:bg-(--light-color)/30 p-2 text-sm rounded-md font-semibold text-(--light-color)`}>
                                 <MdDragIndicator size={26} /> {ele.name}
                             </Link>
                             :
-                            <></>
+                            null
                         })
                     }
                 </div>
@@ -113,9 +126,14 @@ export default function AuthLayout() {
             {!isMenuOpen &&
             <button 
             onClick={()=> setIsMenuOpen(true)}
-            className='fixed top-1/2 -left-7 bg-(--dark-color) cursor-pointer rounded-full py-3 pr-3 pl-10 text-(--light-color)'><FaArrowRightToBracket /></button>}
+            aria-label='Open Menu' title='Open Menu'
+            className='fixed top-1/2 -left-7 z-999 hover:-left-5 duration-200 ease-linear bg-(--dark-color) cursor-pointer rounded-full py-3 pr-3 pl-10 text-(--light-color)'><FaArrowRightToBracket /></button>}
 
-            <main style={{ width: isMenuOpen ? 'calc(100% - 288px)' : '100%' }} className={`h-screen overflow-y-auto border ${isMenuOpen && width <= 768 && 'backdrop-blur-2xl'}`}>
+            <main style={{ 
+                width: isMenuOpen ? 'calc(100% - 288px)' : '100%' ,
+                backgroundImage: 'url(/white-bg.jpg)'
+            }} 
+            className={`h-screen duration-200 ease-linear bg-fixed bg-cover bg-no-repeat bg-center overflow-y-auto ${isMenuOpen && width <= 1000 && 'blur-xl'}`}>
                 <Outlet />
             </main>
         </div>

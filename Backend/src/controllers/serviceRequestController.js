@@ -9,6 +9,11 @@ export const createServiceRequest = async (req, res) => {
             return res.status(400).json({ message: 'Please provide all fields' });
         }
 
+        const existRequest = await ServiceRequestModel.findOne({client: req.user._id, service});
+        if(existRequest){
+            return res.status(400).json({message: "You have alrady made request for this service"})
+        }
+
         const request = new ServiceRequestModel({
             client: req.user._id,
             service,
@@ -28,9 +33,9 @@ export const getServiceRequests = async (req, res) => {
         let requests;
 
         if (req.user.role === "admin") {
-            requests = await ServiceRequestModel.find().populate("client", "name email").populate("service", "name");
+            requests = await ServiceRequestModel.find().populate("client", "name email").populate("service", "name").sort({createdAt: -1});
         } else {
-            requests = await ServiceRequestModel.find({ client: req.user._id }).populate("service", "name");
+            requests = await ServiceRequestModel.find({ client: req.user._id }).populate("service", "name").sort({createdAt: -1});
         }
 
         res.json({ message: 'Services fetched successfully', data: requests });

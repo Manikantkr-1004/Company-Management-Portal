@@ -5,15 +5,15 @@ export const getProjects = async (req, res) => {
         let projects;
 
         if (req.user.role === "admin") {
-            projects = await ProjectModel.find().populate("client", "name email").populate("assignedEmployees", "name email");
+            projects = await ProjectModel.find().populate("client", "name email").populate("assignedEmployees", "name email").sort({createdAt: -1});
         }
 
         if (req.user.role === "employee") {
-            projects = await ProjectModel.find({ assignedEmployees: req.user._id, }).populate("client", "name email");
+            projects = await ProjectModel.find({ assignedEmployees: req.user._id, }).populate("client", "name email").sort({createdAt: -1});
         }
 
         if (req.user.role === "client") {
-            projects = await ProjectModel.find({ client: req.user._id }).populate("assignedEmployees", "name email");
+            projects = await ProjectModel.find({ client: req.user._id }).populate("assignedEmployees", "name email").sort({createdAt: -1});
         }
 
         res.json({ message: 'Projects fetched successfully', data: projects });

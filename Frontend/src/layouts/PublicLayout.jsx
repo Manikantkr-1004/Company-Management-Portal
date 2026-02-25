@@ -13,7 +13,7 @@ export default function PublicLayout() {
     const makeLogout = async () => {
         try {
             setLoading(true);
-            const response = await UserLogout();
+            const response = await UserLogout(user.csrfToken);
             handleLogout();
             toast.success(response.data.message);
         } catch (error) {
@@ -43,7 +43,7 @@ export default function PublicLayout() {
 
                 {user.isLoggedIn && 
                 <Link to={'/profile'} title='Go to Profile' className="w-8 h-8 bg-white rounded-full overflow-hidden border-2 border-(--light-color)">
-                    <img className='w-full h-full object-cover' src={`https://robohash.org/${user.name}`} alt={user.name} width={32} height={32} />
+                    <img className='w-full h-full object-cover' src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${user.name}`} alt={user.name} width={32} height={32} />
                 </Link>}
 
             </nav>

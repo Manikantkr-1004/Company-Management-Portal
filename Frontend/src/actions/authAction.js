@@ -1,15 +1,21 @@
 import axios from 'axios';
 const API = import.meta.env.VITE_BACKEND_URL + '/api/auth';
 
-export const UserLogin = async (data) => {
+export const UserLogin = async (data, token) => {
     return await axios.post(`${API}/login`, data, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+            'x-csrf-token': token
+        }
     })
 }
 
-export const UserLogout = async () => {
+export const UserLogout = async (token) => {
     return await axios.post(`${API}/logout`, {}, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+            'x-csrf-token': token
+        }
     })
 }
 

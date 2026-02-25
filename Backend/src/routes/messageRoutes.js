@@ -4,7 +4,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const messageRouter = Router();
 
-messageRouter.get("/users", protect, getChatUsers);
+messageRouter.get("/", protect, getChatUsers);
 messageRouter.get("/:userId", protect, getConversation);
 messageRouter.post("/", protect, sendMessage);
 

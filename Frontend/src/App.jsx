@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <AllRoutes />
-      <ToastContainer position="top-right" pauseOnHover pauseOnFocusLoss />
+      <ToastContainer position="top-center" pauseOnHover pauseOnFocusLoss />
     </>
   )
 }
