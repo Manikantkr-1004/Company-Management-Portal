@@ -41,7 +41,7 @@ export const getConversation = async (req, res) => {
                 { sender: req.user._id, receiver: otherUserId },
                 { sender: otherUserId, receiver: req.user._id },
             ],
-        }).populate('sender','name').populate('receiver','name').sort({ createdAt: 1 });
+        }).populate('sender','name').sort({ createdAt: 1 });
 
         res.json({ message: 'Messages fetched successfully!', data: messages });
     } catch (error) {

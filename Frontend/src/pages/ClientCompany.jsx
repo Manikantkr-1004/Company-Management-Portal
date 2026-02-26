@@ -89,14 +89,14 @@ export default function ClientCompany() {
                         className={`w-full flex flex-col gap-2 p-2 bg-white rounded-b-lg ${isCreate ? 'block' : 'hidden'}`}>
                         <textarea
                             value={formData.description} onChange={handleChange}
-                            className="w-full border p-1" name="description" id="description" minLength={10} rows={5} required placeholder="Enter Company Description"></textarea>
+                            className="w-full border rounded p-1" name="description" id="description" minLength={10} rows={5} required placeholder="Enter Company Description"></textarea>
                         <div className="w-full flex flex-col sm:flex-row items-center gap-2">
                             <input
                                 value={formData.name} onChange={handleChange}
-                                className="w-full sm:w-1/2 border p-1" type="text" name="name" id="name" placeholder="Enter Company Name" required />
+                                className="w-full sm:w-1/2 border rounded p-1" type="text" name="name" id="name" placeholder="Enter Company Name" required />
                             <button
                                 disabled={loading}
-                                className="w-full sm:w-1/2 p-1 bg-(--dark-color) text-white rounded cursor-pointer" type="submit">{loading ? 'In Progress...' : 'Create'}</button>
+                                className="w-full duration-150 ease-out hover:scale-95 focus:scale-90 active:scale-85 sm:w-1/2 p-1 bg-(--dark-color) text-white rounded cursor-pointer" type="submit">{loading ? 'In Progress...' : 'Create'}</button>
                         </div>
                     </form>
                 </div>}

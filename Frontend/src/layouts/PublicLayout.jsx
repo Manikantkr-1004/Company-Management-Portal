@@ -37,7 +37,7 @@ export default function PublicLayout() {
                 <button aria-label='Logout' title='Logout' 
                 disabled={loading}
                 onClick={makeLogout}
-                className={`bg-red-500 cursor-pointer w-8 h-8 rounded-full flex justify-center items-center ${loading && 'animate-pulse'}`}>
+                className={`bg-red-500 btn-animate cursor-pointer w-8 h-8 rounded-full flex justify-center items-center ${loading && 'animate-pulse'}`}>
                     <IoLogOut size={22} />
                 </button>}
 

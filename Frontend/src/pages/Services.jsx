@@ -149,14 +149,14 @@ export default function Services() {
                         className={`w-full flex flex-col gap-2 p-2 bg-white rounded-b-lg ${isCreate ? 'block' : 'hidden'}`}>
                         <textarea
                             value={formData.description} onChange={handleChange}
-                            className="w-full border p-1" name="description" id="description" minLength={10} rows={5} required placeholder="Enter Related Description"></textarea>
+                            className="w-full border rounded p-1" name="description" id="description" minLength={10} rows={5} required placeholder="Enter Related Description"></textarea>
                         <div className="w-full flex flex-col sm:flex-row items-center gap-2">
                             <input
                                 value={formData.name} onChange={handleChange}
-                                className="w-full sm:w-1/2 border p-1" type="text" name="name" id="name" placeholder={user.role === 'admin' ? 'Enter Service Name' : 'Enter Service Id'} required />
+                                className="w-full sm:w-1/2 border rounded p-1" type="text" name="name" id="name" placeholder={user.role === 'admin' ? 'Enter Service Name' : 'Enter Service Id'} required />
                             <button
                                 disabled={loading}
-                                className="w-full sm:w-1/2 p-1 bg-(--dark-color) text-white rounded cursor-pointer" type="submit">{loading ? 'In Progress...' : 'Create'}</button>
+                                className="w-full duration-150 ease-out hover:scale-95 focus:scale-90 active:scale-85 sm:w-1/2 p-1 bg-(--dark-color) text-white rounded cursor-pointer" type="submit">{loading ? 'In Progress...' : 'Create'}</button>
                         </div>
                     </form>
                 </div>}
@@ -175,15 +175,18 @@ export default function Services() {
                             {
                                 serviceData?.map((item) => (
                                     <div key={item?._id} className="w-full relative bg-white break-inside-avoid self-start overflow-hidden border text-(--dark-color) rounded-md p-2">
-                                        <h5 className="font-bold text-center">{item?.name}</h5>
+                                        <h5 className="font-bold text-center capitalize">{item?.name}</h5>
                                         <p className="text-sm whitespace-pre-wrap">{item?.description}</p>
                                         {user.role==='client' && <p className="text-sm font-semibold my-1">Unique Id: {item?._id}</p>}
                                         <p className="text-sm">🕛 {readableDateTime(item?.createdAt)}</p>
-                                        {user.role==='client' && <button onClick={()=> handleServieRequest(item)} className="w-full bg-(--dark-color) text-sm font-semibold py-1 rounded cursor-pointer text-white">Make Service Request</button>}
+                                        {user.role==='client' && 
+                                        <button 
+                                        onClick={()=> handleServieRequest(item)} 
+                                        className="w-full bg-(--dark-color) btn-animate text-sm font-semibold py-1 rounded cursor-pointer text-white">Make Service Request</button>}
                                         <div className="w-full flex items-center justify-between gap-2 border-t border-dashed pt-2 mt-2">
                                             <img className="rounded-md border bg-(--dark-color)" src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${item?.createdBy?.name}`} alt={item?.createdBy?.name} width={32} height={32} />
                                             <div className="w-full text-xs">
-                                                <p className="line-clamp-1">{item?.createdBy?.name}</p>
+                                                <p className="line-clamp-1 capitalize">{item?.createdBy?.name}</p>
                                                 <p className="font-semibold">CreatedBy: {item?.createdBy?.role}</p>
                                             </div>
                                         </div>
@@ -209,20 +212,20 @@ export default function Services() {
                             {
                                 serviceRequestData?.map((item) => (
                                     <div key={item?._id} className="w-full relative bg-white break-inside-avoid self-start overflow-hidden border text-(--dark-color) rounded-md p-2">
-                                        <h5 className="font-bold text-center">{item?.service?.name}</h5>
+                                        <h5 className="font-bold text-center capitalize">{item?.service?.name}</h5>
                                         <p className="text-sm whitespace-pre-wrap">{item?.description}</p>
                                         <p className="text-sm font-semibold my-1">🕛 {readableDateTime(item?.createdAt)}</p>
-                                        <p className={`px-3 py-1 rounded-md text-xs text-white font-semibold ${item?.status==='pending'?'bg-blue-500' : item?.status==='approved'?'bg-green-500': 'bg-red-500'}`}>Status: {item?.status}</p>
+                                        <p className={`px-3 py-1 rounded-md text-xs text-white font-semibold capitalize ${item?.status==='pending'?'bg-blue-500' : item?.status==='approved'?'bg-green-500': 'bg-red-500'}`}>Status: {item?.status}</p>
                                         {user.role==='admin' &&
                                         <div className="w-full flex items-center justify-between gap-2 border-t border-dashed pt-2 mt-2">
                                             <img className="rounded-md border bg-(--dark-color)" src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${item?.client?.name}`} alt={item?.client?.name} width={32} height={32} />
                                             <div className="w-full text-xs">
-                                                <p>Requested by {item?.client?.name}</p>
-                                                <p className="font-semibold">✉️ {item?.client?.email}</p>
+                                                <p className="capitalize">Requested by {item?.client?.name}</p>
+                                                <p className="font-semibold">{item?.client?.email}</p>
                                             </div>
                                         </div>}
                                         {user.role==='admin' && item?.status !=='approved' &&
-                                        <select className="w-full p-1.5 text-sm border rounded font-semibold mt-2"
+                                        <select className="w-full btn-animate p-1.5 text-sm border rounded font-semibold mt-2"
                                         onChange={(e)=> handleUpdateServiceRequest(item, e.target.value)}>
                                             <option value="">Update Status</option>
                                             <option value="pending">Pending</option>

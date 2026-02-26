@@ -65,7 +65,7 @@ export default function Login() {
 
                 <button 
                 disabled={loading}
-                className="bg-(--dark-color) hover:bg-(--light-color) cursor-pointer w-full py-2 rounded text-white font-semibold text-sm" type="submit">
+                className="bg-(--dark-color) hover:bg-(--light-color) btn-animate cursor-pointer w-full py-2 rounded text-white font-semibold text-sm" type="submit">
                     {loading ? 'In Progress...' : 'Login'}
                 </button>
 

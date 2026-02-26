@@ -7,9 +7,28 @@
 }
 
 :root{
-  --dark-color: #0c1a25;
+  --dark-color: #0e293d;
   --light-color: #63e4fd;
 }
+
+/* Button Click Transition  */
+
+.btn-animate {
+  transition: transform 0.15s ease-out;
+}
+
+.btn-animate:hover {
+  transform: scale(1.05);
+}
+
+.btn-animate:focus {
+  transform: scale(1.02);
+}
+
+.btn-animate:active {
+  transform: scale(0.98);
+}
+
 
 /* Loading Animation CSS  */
 .loader {

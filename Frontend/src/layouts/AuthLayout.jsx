@@ -93,7 +93,7 @@ export default function AuthLayout() {
                         <img className='w-full h-full object-cover' src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${user.name}`} alt={user.name} width={32} height={32} />
                     </div>
                     <div className="w-full flex flex-col gap-1 overflow-hidden">
-                        <p className='text-sm text-(--light-color) font-semibold'>{user.name}</p>
+                        <p className='text-sm text-(--light-color) font-semibold capitalize'>{user.name}</p>
                         <p className='text-xs text-white'>{user.email}</p>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ export default function AuthLayout() {
                         allRoutes.map((ele) => {
                             return ele.roles.includes(user.role) ?
                             <Link key={ele.name} to={ele.url} onClick={handleToggle}
-                            className={`w-full flex items-center gap-2 ${ele.url === pathname ? 'bg-(--light-color)/40' : 'bg-(--light-color)/10'} hover:bg-(--light-color)/30 p-2 text-sm rounded-md font-semibold text-(--light-color)`}>
+                            className={`w-full btn-animate flex items-center capitalize gap-2 ${ele.url === pathname ? 'bg-(--light-color)/40' : 'bg-(--light-color)/10'} hover:bg-(--light-color)/30 p-2 text-sm rounded-md font-semibold text-(--light-color)`}>
                                 <MdDragIndicator size={26} /> {ele.name}
                             </Link>
                             :
@@ -115,7 +115,7 @@ export default function AuthLayout() {
                 <button aria-label='Logout' title='Logout'
                     disabled={loading}
                     onClick={makeLogout}
-                    className={`w-full bg-red-500 cursor-pointer py-2 rounded-full flex justify-center items-center gap-2 text-white text-sm font-semibold ${loading && 'animate-pulse'}`}>
+                    className={`w-full btn-animate bg-red-500 cursor-pointer py-2 rounded-full flex justify-center items-center gap-2 text-white text-sm font-semibold ${loading && 'animate-pulse'}`}>
                     <IoLogOut size={22} /> Logout
                 </button>
 

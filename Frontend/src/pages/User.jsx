@@ -126,18 +126,18 @@ export default function User() {
                         <div className="w-full flex flex-col sm:flex-row items-center gap-2">
                             <input
                                 value={formData.name} onChange={handleChange}
-                                className="w-full sm:w-1/2 border p-1" type="text" name="name" id="name" minLength={2} placeholder="Enter User Name" required />
+                                className="w-full sm:w-1/2 border rounded p-1" type="text" name="name" id="name" minLength={2} placeholder="Enter User Name" required />
                             <input
                                 value={formData.email} onChange={handleChange}
-                                className="w-full sm:w-1/2 border p-1" type="email" name="email" id="email" placeholder="Enter User Email" required />
+                                className="w-full sm:w-1/2 border rounded p-1" type="email" name="email" id="email" placeholder="Enter User Email" required />
                         </div>
                         <div className="w-full flex flex-col sm:flex-row items-center gap-2">
                             <input
                                 value={formData.password} onChange={handleChange}
-                                className="w-full sm:w-1/2 border p-1" type="password" name="password" id="password" minLength={6} placeholder="Enter User Password" required />
+                                className="w-full sm:w-1/2 border rounded p-1" type="password" name="password" id="password" minLength={6} placeholder="Enter User Password" required />
                             <select
                                 value={formData.role} onChange={handleChange}
-                                className="w-full sm:w-1/2 border p-1" name="role" id="role" required>
+                                className="w-full sm:w-1/2 border rounded p-1" name="role" id="role" required>
                                 <option value="">Select User Role</option>
                                 <option value="client">Client</option>
                                 <option value="employee">Employee</option>
@@ -147,7 +147,7 @@ export default function User() {
                             {formData.role === 'client' &&
                                 <select
                                     value={formData.company} onChange={handleChange}
-                                    className="w-full sm:w-1/2 border p-1" name="company" id="company" required >
+                                    className="w-full sm:w-1/2 border rounded p-1" name="company" id="company" required >
                                     <option value="">Select Client Company</option>
                                     {
                                         companyData?.map((ele) => (
@@ -157,7 +157,7 @@ export default function User() {
                                 </select>}
                             <button
                                 disabled={loading}
-                                className="w-full sm:w-1/2 p-1 bg-(--dark-color) text-white rounded cursor-pointer" type="submit">{loading ? 'In Progress...' : 'Create'}</button>
+                                className="w-full duration-150 ease-out hover:scale-95 focus:scale-90 active:scale-85 sm:w-1/2 p-1 bg-(--dark-color) text-white rounded cursor-pointer" type="submit">{loading ? 'In Progress...' : 'Create'}</button>
                         </div>
                     </form>
                 </div>}
@@ -176,14 +176,15 @@ export default function User() {
                                 data?.map((item) => (
                                     <div key={item?._id} className="w-full relative bg-white break-inside-avoid self-start overflow-hidden border text-(--dark-color) rounded-md p-2">
                                         <img className="rounded-md border bg-(--dark-color) w-full" src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${item?.name}`} alt={item?.name} width={500} height={500} />
-                                        <h5 className="font-bold text-center">{item?.name} - ({item?.role})</h5>
+                                        <h5 className="font-bold text-center capitalize">{item?.name} - ({item?.role})</h5>
                                         <p className="text-sm">📧 {item?.email}</p>
                                         <p className="text-sm">🕛 {readableDateTime(item?.createdAt)}</p>
-                                        {item?.company && <p className="font-semibold text-sm">Company: {item?.company?.name}</p>}
+                                        {item?.company && <p className="font-semibold text-sm capitalize">Company: {item?.company?.name}</p>}
+                                        {item?.role ==='employee' &&
                                         <button 
                                         disabled={loading} aria-label="Delete User" title="Delete User"
                                         onClick={()=> handleDeleteUser(item?._id)}
-                                        className="absolute top-0 right-0 bg-red-500 cursor-pointer text-white rounded p-1.5"><MdDelete /></button>
+                                        className="absolute top-0 right-0 btn-animate bg-red-500 cursor-pointer text-white rounded p-1.5"><MdDelete /></button>}
                                     </div>
                                 ))
                             }

@@ -1,8 +1,8 @@
-import crypto from 'node:crypto';
 
 export const visitorMiddleware = (req, res, next) => {
-    // Check SIGNED cookie first (tamper-proof) along with tampered/edited
-    let signedVisitorId = req.signedCookies['__visitor_id'], visitorId = req.cookies['__visitor_id'];
+
+    const signedVisitorId = req.signedCookies['__visitor_id'];
+    let visitorId = signedVisitorId; // Using signed cookie only that is tampered proof
 
     const cookieConfig = {
         httpOnly: true,
@@ -12,16 +12,11 @@ export const visitorMiddleware = (req, res, next) => {
         path: '/'
     };
 
-    const newUUID = crypto.randomUUID();
-
-    if (!signedVisitorId && visitorId) {
-        res.cookie('__visitor_id', newUUID, cookieConfig);
+    if (!visitorId) { // For new user and if exist user tampered cookie
+        visitorId = crypto.randomUUID();
+        res.cookie('__visitor_id', visitorId, cookieConfig);
     }
 
-    if (!signedVisitorId && !visitorId) {
-        res.cookie('__visitor_id', newUUID, cookieConfig);
-    }
-
-    req.session = { visitorId: signedVisitorId || newUUID , ...req.session };
+    req.session = { ...req.session, visitorId }; // Adding visitorId in req.session for CSRF config
     next();
 };

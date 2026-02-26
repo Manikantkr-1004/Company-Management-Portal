@@ -46,7 +46,7 @@ export default function Profile() {
             <div className="w-full flex flex-col gap-5 mt-5">
                 <img width={150} height={150} className="rounded-full border-2 m-auto bg-(--dark-color)" src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${user.name}`} alt={user.name} />
                 <div className="w-full flex justify-center items-center flex-wrap gap-3">
-                    <div className="border-2 border-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 bg-white flex flex-col gap-0.5">
+                    <div className="border-2 border-(--dark-color) capitalize w-full sm:w-auto min-w-50 rounded-md py-1 px-5 bg-white flex flex-col gap-0.5">
                         <p className="font-bold">Full Name</p>
                         <p>{user.name}</p>
                     </div>
@@ -54,7 +54,7 @@ export default function Profile() {
                         <p className="font-bold">Your Email</p>
                         <p>{user.email}</p>
                     </div>
-                    <div className="border-2 border-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 bg-white flex flex-col gap-0.5">
+                    <div className="border-2 border-(--dark-color) w-full capitalize sm:w-auto min-w-50 rounded-md py-1 px-5 bg-white flex flex-col gap-0.5">
                         <p className="font-bold">Your Role</p>
                         <p>{user.role}</p>
                     </div>
@@ -99,7 +99,7 @@ export default function Profile() {
                     type="password" name="password" id="password" placeholder="Enter new password" minLength={6} />
                     <button 
                     disabled={loading}
-                    className="w-full md:w-auto bg-(--dark-color) text-white text-sm py-1.5 px-3 cursor-pointer rounded"
+                    className="w-full btn-animate md:w-auto bg-(--dark-color) text-white text-sm py-1.5 px-3 cursor-pointer rounded"
                     type="submit">{loading ? 'In Progress...' : 'Update'}</button>
                 </form>
             </div>

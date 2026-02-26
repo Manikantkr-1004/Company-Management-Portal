@@ -44,12 +44,20 @@ export default function Dashboard() {
                     <p>{statsData?.totalClients}</p>
                 </div>
                 <div className="border-2 bg-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 text-white flex flex-col gap-0.5">
+                    <p className="font-bold">Total Client Companies</p>
+                    <p>{statsData?.totalClientCompanies}</p>
+                </div>
+                <div className="border-2 bg-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 text-white flex flex-col gap-0.5">
                     <p className="font-bold">Total Projects</p>
                     <p>{statsData?.totalProjects}</p>
                 </div>
                 <div className="border-2 bg-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 text-white flex flex-col gap-0.5">
                     <p className="font-bold">Total Services</p>
                     <p>{statsData?.totalServices}</p>
+                </div>
+                <div className="border-2 bg-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 text-white flex flex-col gap-0.5">
+                    <p className="font-bold">Total Service Requests</p>
+                    <p>{statsData?.totalServiceRequests}</p>
                 </div>
                 <div className="border-2 border-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 bg-white flex flex-col gap-0.5">
                     <p className="font-bold">Total Completed Projects</p>
@@ -73,8 +81,16 @@ export default function Dashboard() {
                     <p>{statsData?.assignedProjects}</p>
                 </div>
                 <div className="border-2 bg-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 text-white flex flex-col gap-0.5">
-                    <p className="font-bold">Total Completed Projects</p>
-                    <p>{statsData?.completedProjects}</p>
+                    <p className="font-bold">Completed Projects</p>
+                    <p>{statsData?.projectStatus?.completed}</p>
+                </div>
+                <div className="border-2 bg-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 text-white flex flex-col gap-0.5">
+                    <p className="font-bold">InProgress Projects</p>
+                    <p>{statsData?.projectStatus?.inProgress}</p>
+                </div>
+                <div className="border-2 bg-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 text-white flex flex-col gap-0.5">
+                    <p className="font-bold">Pending Projects</p>
+                    <p>{statsData?.projectStatus?.pending}</p>
                 </div>
             </div>
             }
@@ -86,8 +102,24 @@ export default function Dashboard() {
                     <p>{statsData?.myProjects}</p>
                 </div>
                 <div className="border-2 bg-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 text-white flex flex-col gap-0.5">
+                    <p className="font-bold">Available Services</p>
+                    <p>{statsData?.totalServices}</p>
+                </div>
+                <div className="border-2 bg-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 text-white flex flex-col gap-0.5">
+                    <p className="font-bold">My Service Requests</p>
+                    <p>{statsData?.totalServiceRequests}</p>
+                </div>
+                <div className="border-2 border-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 bg-white flex flex-col gap-0.5">
                     <p className="font-bold">Completed Projects</p>
-                    <p>{statsData?.completedProjects}</p>
+                    <p>{statsData?.projectStatus?.completed}</p>
+                </div>
+                <div className="border-2 border-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 bg-white flex flex-col gap-0.5">
+                    <p className="font-bold">InProgress Projects</p>
+                    <p>{statsData?.projectStatus?.inProgress}</p>
+                </div>
+                <div className="border-2 border-(--dark-color) w-full sm:w-auto min-w-50 rounded-md py-1 px-5 bg-white flex flex-col gap-0.5">
+                    <p className="font-bold">Pending Projects</p>
+                    <p>{statsData?.projectStatus?.pending}</p>
                 </div>
             </div>
             }

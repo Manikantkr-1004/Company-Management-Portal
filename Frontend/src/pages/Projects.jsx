@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { IoArrowDownCircle } from "react-icons/io5";
 import Loading from "../components/Loading";
 import { toast } from 'react-toastify';
@@ -18,6 +18,7 @@ export default function Projects() {
     const { user } = useContext(UserContext);
     const [isCreate, setIsCreate] = useState(false);
     const [loading, setLoading] = useState(false);
+    const parentRef = useRef();
 
     const [formData, setFormData] = useState(initialData);
     const [emplyeeData, setEmployeeData] = useState([]);
@@ -104,7 +105,7 @@ export default function Projects() {
     }
 
     return (
-        <section className="w-full h-full overflow-y-auto pt-5 pb-10 px-5">
+        <section ref={parentRef} className="w-full h-full scroll-smooth overflow-y-auto pt-5 pb-10 px-5">
             <h2 className="text-3xl font-bold sm:font-extrabold text-center sm:text-left text-(--dark-color)">
                 {user.role === 'admin' ? 'Project Section' : user.role === 'client' ? 'Your Projects' : 'Assigned Projects'}
             </h2>
@@ -118,7 +119,7 @@ export default function Projects() {
                         onClick={() => setIsCreate(false)}
                         disabled={loading}
                         className="w-full flex justify-between items-center cursor-pointer p-1.5 rounded-t gap-5 bg-(--dark-color) text-white text-sm font-semibold">
-                        Assign Employees <IoArrowDownCircle className={`${isCreate ? 'rotate-180' : 'rotate-0'} duration-100 ease-in`} size={20} />
+                        Assign/Unassign Employees <IoArrowDownCircle className={`${isCreate ? 'rotate-180' : 'rotate-0'} duration-100 ease-in`} size={20} />
                     </button>
 
                     <form
@@ -130,7 +131,7 @@ export default function Projects() {
                                     emplyeeData.map((ele) => (
                                         <div key={ele?._id}
                                             onClick={() => handleChange(ele?._id)}
-                                            className={`w-50 cursor-pointer p-2 rounded-md mx-1 inline-flex flex-col text-xs gap-1.5 ${formData?.employeeIds?.includes(ele._id) ? 'border-2 bg-(--dark-color) text-white' : 'border'}`}>
+                                            className={`w-50 duration-150 ease-out hover:scale-95 focus:scale-90 active:scale-85 cursor-pointer p-2 rounded-md mx-1 inline-flex flex-col text-xs gap-1.5 ${formData?.employeeIds?.includes(ele._id) ? 'border-2 bg-(--dark-color) text-white animate-pulse' : 'border'}`}>
                                             <img className="rounded max-w-full bg-(--dark-color)" src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${ele?.name}`} alt={ele?.name} width={300} height={300} />
                                             <p>{ele?.name} - {ele?.role}</p>
                                             <p>{ele?.email}</p>
@@ -141,11 +142,11 @@ export default function Projects() {
                             <div className="w-full flex items-center gap-2">
                                 <input
                                     value={formData.id} disabled
-                                    className="w-full sm:w-1/2 border p-1" type="text" name="id" id="id" placeholder="Enter Project Id" required />
+                                    className="w-full sm:w-1/2 border rounded p-1" type="text" name="id" id="id" placeholder="Enter Project Id" required />
 
                                 <button
                                     disabled={loading}
-                                    className="w-full sm:w-1/2 p-1 bg-(--dark-color) text-white rounded cursor-pointer" type="submit">{loading ? 'In Progress...' : 'Assign Employees'}</button>
+                                    className="w-full duration-150 ease-out hover:scale-95 focus:scale-90 active:scale-85 sm:w-1/2 p-1 bg-(--dark-color) text-white rounded cursor-pointer" type="submit">{loading ? 'In Progress...' : 'Assign Employees'}</button>
                             </div>
                         </div>
                     </form>
@@ -165,10 +166,10 @@ export default function Projects() {
                             {
                                 projectData?.map((item) => (
                                     <div key={item?._id} className="w-full relative bg-white break-inside-avoid self-start overflow-hidden border text-(--dark-color) rounded-md p-2">
-                                        <h5 className="font-bold text-center">{item?.name}</h5>
+                                        <h5 className="font-bold text-center capitalize">{item?.name}</h5>
                                         <p className="text-sm whitespace-pre-wrap">{item?.description}</p>
                                         <p className="text-sm font-semibold">🕛 {readableDateTime(item?.createdAt)}</p>
-                                        <p className={`px-3 py-1 rounded-md text-xs text-white font-semibold my-1 ${item?.status === 'pending' ? 'bg-red-500' : item?.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500'}`}>Status: {item?.status}</p>
+                                        <p className={`px-3 py-1 rounded-md text-xs text-white font-semibold my-1 capitalize ${item?.status === 'pending' ? 'bg-red-500' : item?.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500'}`}>Status: {item?.status}</p>
                                         <p className="text-sm font-semibold">Assigned Employees: {item?.assignedEmployees.length}</p>
 
                                         {/* Showing Client Info only Admin and Employee  */}
@@ -177,7 +178,7 @@ export default function Projects() {
                                                 <img className="rounded-md border bg-(--dark-color)" src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${item?.client?.name}`} alt={item?.client?.name} width={32} height={32} />
                                                 <div className="w-full text-xs">
                                                     <p className="line-clamp-1">{item?.client?.email}</p>
-                                                    <p className="font-semibold">Client: {item?.client?.name}</p>
+                                                    <p className="font-semibold capitalize">Client: {item?.client?.name}</p>
                                                 </div>
                                             </div>}
 
@@ -190,7 +191,7 @@ export default function Projects() {
                                                             <img className="rounded-md border bg-(--dark-color)" src={`https://api.dicebear.com/9.x/toon-head/svg?seed=${emp?.name}`} alt={item?.emp?.name} width={32} height={32} />
                                                             <div className="w-full text-xs">
                                                                 <p className="line-clamp-1">{emp?.email}</p>
-                                                                <p className="font-semibold">Employee {ind + 1}: {emp?.name}</p>
+                                                                <p className="font-semibold capitalize">Employee {ind + 1}: {emp?.name}</p>
                                                             </div>
                                                         </div>
                                                     ))
@@ -204,15 +205,15 @@ export default function Projects() {
                                                 onClick={() => {
                                                     setFormData((prev) => ({ id: item?._id, employeeIds: item?.assignedEmployees.map(ele => ele._id) }));
                                                     setIsCreate(true);
-                                                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                                                    parentRef.current.scrollTop = 0;
                                                 }}
-                                                className="w-full py-1.5 bg-(--dark-color) text-white text-sm rounded cursor-pointer">Assign Employees</button>
+                                                className="w-full btn-animate py-1.5 bg-(--dark-color) text-white text-sm rounded cursor-pointer">Assign/Unassign Employees</button>
                                         }
 
                                         {/* Update Project Status by Employee  */}
                                         {user.role === 'employee' &&
                                             <select onChange={(e) => handleUpdateProjectStatus(item, e.target.value)}
-                                                className="w-full border p-1 rounded text-sm font-semibold my-2">
+                                                className="w-full border btn-animate p-1 rounded text-sm font-semibold my-2">
                                                 <option value="">Update Project Status</option>
                                                 <option value="pending">Pending</option>
                                                 <option value="in-progress">In Progress</option>

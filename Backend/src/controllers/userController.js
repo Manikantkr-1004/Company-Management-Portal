@@ -3,6 +3,8 @@ import { UserModel } from "../models/User.js";
 import { isEmailValid } from "../utils/emailPattern.js";
 import { ProjectModel } from "../models/Project.js";
 import { ServiceModel } from "../models/Service.js";
+import { ClientCompanyModel } from "../models/ClientCompany.js";
+import { ServiceRequestModel } from "../models/ServiceRequest.js";
 
 export const createUser = async (req, res) => {
     try {
@@ -113,8 +115,10 @@ export const getDashboardStats = async (req, res) => {
         if (req.user.role === "admin") {
             const totalEmployees = await UserModel.countDocuments({ role: "employee" });
             const totalClients = await UserModel.countDocuments({ role: "client" });
+            const totalClientCompanies = await ClientCompanyModel.countDocuments();
             const totalProjects = await ProjectModel.countDocuments();
-            const totalServices = await ServiceModel.countDocuments();z
+            const totalServices = await ServiceModel.countDocuments();
+            const totalServiceRequests = await ServiceRequestModel.countDocuments();
 
             const completedProjects = await ProjectModel.countDocuments({ status: "completed" });
             const inProgressProjects = await ProjectModel.countDocuments({ status: "in-progress" });
@@ -123,8 +127,10 @@ export const getDashboardStats = async (req, res) => {
             stats = {
                 totalEmployees,
                 totalClients,
+                totalClientCompanies,
                 totalProjects,
                 totalServices,
+                totalServiceRequests,
                 projectStatus: {
                     completed: completedProjects,
                     inProgress: inProgressProjects,
@@ -143,8 +149,23 @@ export const getDashboardStats = async (req, res) => {
                 assignedEmployees: req.user._id,
                 status: "completed",
             });
+            const inprogressProjects = await ProjectModel.countDocuments({
+                assignedEmployees: req.user._id,
+                status: "in-progress",
+            });
+            const pendingProjects = await ProjectModel.countDocuments({
+                assignedEmployees: req.user._id,
+                status: "pending",
+            });
 
-            stats = { assignedProjects, completedProjects };
+            stats = { 
+                assignedProjects, 
+                projectStatus: {
+                    completed: completedProjects,
+                    inProgress: inprogressProjects,
+                    pending: pendingProjects,
+                }
+            };
         }
 
         // CLIENT DASHBOARD
@@ -152,13 +173,34 @@ export const getDashboardStats = async (req, res) => {
             const myProjects = await ProjectModel.countDocuments({
                 client: req.user._id,
             });
+            const totalServices = await ServiceModel.countDocuments();
+            const totalServiceRequests = await ServiceRequestModel.countDocuments({
+                client: req.user._id
+            });
 
             const completedProjects = await ProjectModel.countDocuments({
                 client: req.user._id,
                 status: "completed",
             });
+            const inprogressProjects = await ProjectModel.countDocuments({
+                client: req.user._id,
+                status: "in-progress",
+            });
+            const pendingProjects = await ProjectModel.countDocuments({
+                client: req.user._id,
+                status: "pending",
+            });
 
-            stats = { myProjects, completedProjects};
+            stats = { 
+                myProjects, 
+                totalServices,
+                totalServiceRequests,
+                projectStatus: {
+                    completed: completedProjects,
+                    inProgress: inprogressProjects,
+                    pending: pendingProjects,
+                }
+            };
         }
 
         res.json({ message: 'Status Fetched Successfully', data: stats });
