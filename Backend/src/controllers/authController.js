@@ -15,16 +15,25 @@ const generateJwtToken = (user) => {
     );
 };
 
+const authCookieName = process.env.NODE_ENV === 'production' ? "__Host-auth-token" : "auth-token";
+const authCookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    path: '/',
+    signed: true,
+};
 // LOGIN
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        if(!email.trim() || !password.trim()){
-            return res.status(400).json({message: 'Please provide all fields'});
+        if (!email.trim() || !password.trim()) {
+            return res.status(400).json({ message: 'Please provide all fields' });
         }
 
-        if(!isEmailValid.test(email)){
-            return res.status(400).json({message: 'Email is invalid'});
+        if (!isEmailValid.test(email)) {
+            return res.status(400).json({ message: 'Email is invalid' });
         }
 
         const user = await UserModel.findOne({ email });
@@ -44,15 +53,7 @@ export const loginUser = async (req, res) => {
 
         const token = generateJwtToken(user);
 
-        const cookieName = process.env.NODE_ENV === 'production' ? "__Host-auth-token" : "auth-token";
-        res.cookie(cookieName, token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? "none" : "lax",
-            maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-            path: '/',
-            signed: true,
-        });
+        res.cookie(authCookieName, token, authCookieOptions);
 
         res.json({
             message: 'Login successfull!', data: {
@@ -75,9 +76,8 @@ export const loginUser = async (req, res) => {
 export const logoutUser = async (req, res) => {
     try {
         // just simple logout functionality
-        const cookieName = process.env.NODE_ENV === 'production' ? "__Host-auth-token" : "auth-token";
-        res.clearCookie(cookieName);
-        res.json({message: 'Logout Successfully'});
+        res.clearCookie(authCookieName, {...authCookieOptions, maxAge: 0});
+        res.json({ message: 'Logout Successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
@@ -85,7 +85,7 @@ export const logoutUser = async (req, res) => {
 
 // GET CURRENT USER
 export const getMe = async (req, res) => {
-    res.json({message: "User got successfully", data: req.user});
+    res.json({ message: "User got successfully", data: req.user });
 };
 
 // GET CSRF Token
